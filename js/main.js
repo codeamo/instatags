@@ -85,11 +85,14 @@ $(function () {
   function renderUserInfo (user) {
     // This is how the user profile picture is rendered.
     $('#user img').attr('src', user.profile_picture);
-    console.log(user);
+    //console.log(user);
     // Now figure out how to render the remaining user information.
     // For example the h1 title should show the username. And the other fields
     // need to show the number of followers, follows, and posted images.
     $('#user h1').text(user.full_name);
+    $('#num-media').text(user.counts.media);
+    $('#num-followers').text(user.counts.followed_by);
+    $('#num-follows').text(user.counts.follows);
     // Once you're done here, take a look at the Instagram.getUserRecentMedia() callback.
   }
 
@@ -98,7 +101,7 @@ $(function () {
     // Btw, you might need to do something similar later in other functions,
     // and we're not going to mention it, it's up to you to figure out when!
     $('.user-media').html('');
-
+    //console.log(media);
     media.forEach(function (mediaItem) {
       // Let's create an empty div element with jQuery. In this div we'll show
       // a picture. Notice that since we're in a forEach "loop",
