@@ -31,18 +31,16 @@ $(function () {
 
     // First we need to collect all the hashtags.
     var tags = extractTagsFromMedia(media);
-
     // Next, we want to sort them by frequency.
     // Look at the function and try to figure out how!
     var sortedTags = sortTagsByFrequencyDesc(tags);
-
     // Mmm... these are a lot of hashtags! Can you implement a function
     // that filters the array to include only the most relevant hashtags?
     // The function should take 2 arguments: (tags, minFrequency)
     // where "tags" is the sorted array of hashtags, and "minFrequency"
     // is a number representing the minimum frequency allowed.
     // It returns a new array of hastags with frequency equal or above the set limit.
-
+    var filteredTags = filterTags(sortedTags);
     // Guess what? Another render function that is broken!
     // Let's go and fix it.
     renderTags(filteredTags);
@@ -79,7 +77,27 @@ $(function () {
   // figure out how to create the right sort function.
   // 💯 Extra credit: Change the function, so it doesn't modify the original array!
   function sortTagsByFrequencyDesc (tags) {
+    var res = tags.sort((a, b) => (a.frequency < b.frequency) ? 1 : -1);
+    return res;
+  }
 
+  //Implementing a function that filters the array to include only the most relevant hashtags?
+  // The function should take 2 arguments: (tags, minFrequency)
+  // where "tags" is the sorted array of hashtags, and "minFrequency"
+  // is a number representing the minimum frequency allowed.
+  // It returns a new array of hastags with frequency equal or above the set limit.
+  function filterTags (sortedTags, minFrequency) {
+    let arr = [];
+    sortedTags.forEach(function (obj) {
+      for (let key in obj) {
+        if (typeof obj[key] === 'number') {
+          if (obj[key] > minFrequency) {
+            arr.push(obj);
+          }
+        }
+      }
+    });
+    return arr;
   }
 
   function renderUserInfo (user) {
@@ -101,28 +119,27 @@ $(function () {
     // Btw, you might need to do something similar later in other functions,
     // and we're not going to mention it, it's up to you to figure out when!
     $('.user-media').html('');
-    //console.log(media);
+    $('.user-media').empty();
     media.forEach(function (mediaItem) {
       // Let's create an empty div element with jQuery. In this div we'll show
       // a picture. Notice that since we're in a forEach "loop",
       // we're creating a div for every picture provided by the API.
-      var div = $('<div>');
-
+      var div = $('<div/>');
       // In order to nicely render this div, here you need to add
       // two CSS classes to it: "user-media-item" and "u-pull-left".
       // Figure out how to do it by digging into the jQuery docs.
-
+      $(div).addClass('user-media-item u-pull-left');
       // We want to show all the pictures as squares, even when they originally
       // have round borders. For this we use a CSS technique that sets the picture
       // as the background image of the element (feel free to check the CSS rules
       // that have been set for ".user-media-item" if you're curious about it).
       // Now add the "background-image" CSS property to the div using jQuery
       // and assign the correct value to it.
-
+      //$//$(div).css({});//$
       // Finally you have to append the div we just created into the
       // ".user-media" div. Notice that the jQuery append function
       // accepts other jQuery objects.
-
+      $('.user-media').append(div);
       // Ok, now go back and continue checking the code from where you left before
       // fixing this function. Btw, we're not going to mention this anymore,
       // as by now navigating code should look familiar to you.
@@ -137,6 +154,7 @@ $(function () {
       // First, you need to create an empty "a" link tag with jQuery. Remember the div we
       // created earlier in this assignment? It should give you some inspiration.
       // Then fill this tag content with the hashtag itself and its frequency.
+      let ankor = $('<a></a>');
 
       // Now create a "li" tag and add the class "u-pull-left" to it.
       // In case you wonder this class is built-in in a CSS framework
