@@ -40,7 +40,7 @@ $(function () {
     // where "tags" is the sorted array of hashtags, and "minFrequency"
     // is a number representing the minimum frequency allowed.
     // It returns a new array of hastags with frequency equal or above the set limit.
-    var filteredTags = filterTags(sortedTags);
+    var filteredTags = filterTagsByLimit(sortedTags, minFrequency);
     // Guess what? Another render function that is broken!
     // Let's go and fix it.
     renderTags(filteredTags);
@@ -86,12 +86,12 @@ $(function () {
   // where "tags" is the sorted array of hashtags, and "minFrequency"
   // is a number representing the minimum frequency allowed.
   // It returns a new array of hastags with frequency equal or above the set limit.
-  function filterTags (sortedTags, minFrequency) {
+  function filterTagsByLimit (sortedTags, minFrequency) {
     let arr = [];
     sortedTags.forEach(function (obj) {
       for (let key in obj) {
         if (typeof obj[key] === 'number') {
-          if (obj[key] > minFrequency) {
+          if (obj[key] >= minFrequency) {
             arr.push(obj);
           }
         }
@@ -155,12 +155,12 @@ $(function () {
       // created earlier in this assignment? It should give you some inspiration.
       // Then fill this tag content with the hashtag itself and its frequency.
       let ankor = $('<a></a>');
-
+      ankor.append(tag.id, tag.frequency);
       // Now create a "li" tag and add the class "u-pull-left" to it.
       // In case you wonder this class is built-in in a CSS framework
       // we're using here: skeleton css (http://getskeleton.com/).
       // Then, add the "a" tag we just created to the "li" content.
-
+      let li = $('<li/>').addClass('u-pull-left');
       // Finally append the "li" to the tag list.
       tagList.append(li);
 
@@ -175,7 +175,7 @@ $(function () {
       a.data('tagId', tag.id);
       // Here you need to bind the click event of the "a" tag to the "handleClickTag" function.
       // Then, go to the function declaration to fix it.
-
+      a.bind('click', handleClickTag(event));
     });
   }
 
