@@ -2,7 +2,7 @@ $(function () {
 
   // We need the user media throughout our code, so we store it in the outer scope.
   var userMedia;
-
+  
   // This is @instagrames account ID, the instragrammer that
   // we're following for this coding assignment.
   var USER_ID = '200482';
@@ -40,6 +40,7 @@ $(function () {
     // where "tags" is the sorted array of hashtags, and "minFrequency"
     // is a number representing the minimum frequency allowed.
     // It returns a new array of hastags with frequency equal or above the set limit.
+    var minFrequency = 2; //I pre-defined the minFrequency for now.
     var filteredTags = filterTagsByLimit(sortedTags, minFrequency);
     // Guess what? Another render function that is broken!
     // Let's go and fix it.
@@ -147,20 +148,23 @@ $(function () {
   }
 
   function renderTags (tags) {
+    // console.log(tags);
     var tagList = $('.tag-list ul');
 
     // Let's iterate over all the tags in the list.
     tags.forEach(function (tag) {
+      // console.log(tag);
       // First, you need to create an empty "a" link tag with jQuery. Remember the div we
       // created earlier in this assignment? It should give you some inspiration.
       // Then fill this tag content with the hashtag itself and its frequency.
-      let ankor = $('<a></a>');
-      ankor.append(tag.id, tag.frequency);
+      let a = $('<a></a>');
+      a.append(`#${tag.id} (${tag.frequency} times)`);
       // Now create a "li" tag and add the class "u-pull-left" to it.
       // In case you wonder this class is built-in in a CSS framework
       // we're using here: skeleton css (http://getskeleton.com/).
       // Then, add the "a" tag we just created to the "li" content.
       let li = $('<li/>').addClass('u-pull-left');
+      li.append(a);
       // Finally append the "li" to the tag list.
       tagList.append(li);
 
@@ -173,6 +177,7 @@ $(function () {
       // we're in a "forEach" loop) and the tag id it refers to.
       // We'll be using this in a moment inside the "handleClickTag" function.
       a.data('tagId', tag.id);
+      //console.log(tag.id);
       // Here you need to bind the click event of the "a" tag to the "handleClickTag" function.
       // Then, go to the function declaration to fix it.
       a.bind('click', handleClickTag(event));
@@ -185,16 +190,20 @@ $(function () {
     // The event object, among other data, contains the target: the link that was clicked.
     // among other data contains the target: the link that was clicked.
     // So, we can cast the HTML element that was clicked into a jQuery object by doing the following.
-    var link = $(event.target);
+    var link = $(event.target); // <a>#canon (15 times)</a> and so on. <a>
 
     // Now we can retrieve the tag data stored in it.
-    var tagId = link.data('tagId');
+    var tagId = link.data('tagId'); //since tagId is in a loop it will equal to the #tag like canon and so on.
 
     // Once we know what tag the user clicked, we can filter the images. You need to create
     // a function that returns an array containing only images with a certain tag.
-
+    // function sortImgByTags (userMedia) {
+      
+    // }
+    console.log(userMedia);
+    
     // Ok, finally you can re-render the filtered media here!
-
+    
   }
 
 });
